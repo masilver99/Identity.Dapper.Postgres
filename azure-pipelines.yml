@@ -16,6 +16,6 @@ steps:
 - task: DotNetCoreInstaller@0
   inputs:
    packageType: 'sdk'
-   version: '2.2' # replace this value with the version that you need for your project
+   version: '2.2.103' # replace this value with the version that you need for your project
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
