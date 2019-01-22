@@ -19,4 +19,10 @@
     <ProjectReference Include="..\..\src\Identity.Dapper.Postgres\Identity.Dapper.Postgres.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
 </Project>

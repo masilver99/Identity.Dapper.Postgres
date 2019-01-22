@@ -1,4 +1,6 @@
-@inject SignInManager<IdentityUser> SignInManager
+@using Microsoft.AspNetCore.Identity
+@using Identity.Dapper.Postgres.Stores
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
