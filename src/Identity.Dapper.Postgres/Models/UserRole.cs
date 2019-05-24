@@ -1,6 +1,6 @@
 using System;
 
-namespace Identity.Dapper.Postgres.Stores
+namespace Identity.Dapper.Postgres.Models
 {
     internal class UserRole
     {

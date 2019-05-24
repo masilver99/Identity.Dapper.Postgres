@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Identity.Dapper.Postgres.Tables;
+using Identity.Dapper.Postgres.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Stores

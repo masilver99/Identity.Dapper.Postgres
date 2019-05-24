@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Identity.Dapper.Postgres.Stores
+namespace Identity.Dapper.Postgres.Models
 {
     public class ApplicationRole
     {

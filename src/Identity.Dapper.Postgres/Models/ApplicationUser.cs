@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
-namespace Identity.Dapper.Postgres.Stores
+namespace Identity.Dapper.Postgres.Models
 {
     public class ApplicationUser
     {
