@@ -4,6 +4,7 @@
 
 using System;
 using Identity.Dapper.Postgres.Stores;
+using Identity.Dapper.Postgres.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
