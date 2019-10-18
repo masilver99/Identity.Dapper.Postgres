@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AE94DD8D-1626-4618-AB38-37459DEE54E0}"
 EndProject
@@ -18,11 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{0236
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{525F9EE4-17EB-4E98-A775-C28282BC2962}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Daarto.Common", "samples\Daarto.Common\Daarto.Common.csproj", "{A00BF7E1-5FC4-4038-A506-4A59898E046F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Dapper.Postgres", "src\Identity.Dapper.Postgres\Identity.Dapper.Postgres.csproj", "{DE982947-300A-474E-9E6C-06776F07B475}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleIdentityApp", "samples\SampleIdentityApp\SampleIdentityApp.csproj", "{05A6CD5E-33DA-4F44-B1E7-AEFF749C3F76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{B25D41A4-9D4D-4278-ABEB-FF58DD193625}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore30", "samples\AspNetCore30\AspNetCore30.csproj", "{986B9A0E-D42B-4535-B84A-9E380D104D60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,28 +32,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A00BF7E1-5FC4-4038-A506-4A59898E046F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A00BF7E1-5FC4-4038-A506-4A59898E046F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A00BF7E1-5FC4-4038-A506-4A59898E046F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A00BF7E1-5FC4-4038-A506-4A59898E046F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE982947-300A-474E-9E6C-06776F07B475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE982947-300A-474E-9E6C-06776F07B475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE982947-300A-474E-9E6C-06776F07B475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE982947-300A-474E-9E6C-06776F07B475}.Release|Any CPU.Build.0 = Release|Any CPU
-
 		{05A6CD5E-33DA-4F44-B1E7-AEFF749C3F76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{05A6CD5E-33DA-4F44-B1E7-AEFF749C3F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05A6CD5E-33DA-4F44-B1E7-AEFF749C3F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05A6CD5E-33DA-4F44-B1E7-AEFF749C3F76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{986B9A0E-D42B-4535-B84A-9E380D104D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{986B9A0E-D42B-4535-B84A-9E380D104D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{986B9A0E-D42B-4535-B84A-9E380D104D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{986B9A0E-D42B-4535-B84A-9E380D104D60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02369E2A-8527-4EC5-AE86-CB7805427398} = {AAE1B832-6032-4C5C-8154-F6775CC051F8}
-		{A00BF7E1-5FC4-4038-A506-4A59898E046F} = {525F9EE4-17EB-4E98-A775-C28282BC2962}
 		{DE982947-300A-474E-9E6C-06776F07B475} = {AE94DD8D-1626-4618-AB38-37459DEE54E0}
 		{05A6CD5E-33DA-4F44-B1E7-AEFF749C3F76} = {525F9EE4-17EB-4E98-A775-C28282BC2962}
+		{B25D41A4-9D4D-4278-ABEB-FF58DD193625} = {AE94DD8D-1626-4618-AB38-37459DEE54E0}
+		{986B9A0E-D42B-4535-B84A-9E380D104D60} = {525F9EE4-17EB-4E98-A775-C28282BC2962}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {78AE28B8-138A-401A-B79E-457DC5EFB188}

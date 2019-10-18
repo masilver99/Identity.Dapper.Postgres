@@ -4,6 +4,7 @@
 
 using System;
 using Identity.Dapper.Postgres.Stores;
+using Identity.Dapper.Postgres.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -22,24 +23,15 @@ namespace Identity.Dapper.Postgres
         /// <param name="connectionString">The database connection string.</param>
         /// <returns>The <see cref="IdentityBuilder"/> instance this method extends.</returns>
         public static IdentityBuilder AddDapperStores(this IdentityBuilder builder, string connectionString) {
-            AddStores(builder.Services, builder.UserType, builder.RoleType, connectionString);
+            AddStores(builder.Services, connectionString);
             return builder;
         }
 
-        private static void AddStores(IServiceCollection services, Type userType, Type roleType, string connectionString) {
-            if (userType != typeof(ApplicationUser)) {
-                throw new InvalidOperationException($"{nameof(AddDapperStores)} can only be called with a user that is of type {nameof(ApplicationUser)}.");
-            }
+        private static void AddStores(IServiceCollection services,  string connectionString) {
 
-            if (roleType != null) {
-                if (roleType != typeof(ApplicationRole)) {
-                    throw new InvalidOperationException($"{nameof(AddDapperStores)} can only be called with a role that is of type {nameof(ApplicationRole)}.");
-                }
-
-                services.TryAddScoped<IUserStore<ApplicationUser>, UserStore>();
-                services.TryAddScoped<IRoleStore<ApplicationRole>, RoleStore>();
-                services.TryAddScoped<IDatabaseConnectionFactory>(provider => new SqlConnectionFactory(connectionString));
-            }
+                services.AddScoped<IUserStore<ApplicationUser>, UserStore>();
+                services.AddScoped<IRoleStore<ApplicationRole>, RoleStore>();
+                services.AddScoped<IDatabaseConnectionFactory>(provider => new SqlConnectionFactory(connectionString));
         }
     }
 }

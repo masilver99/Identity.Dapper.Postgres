@@ -297,11 +297,4 @@ samples/Daarto.WebUI/node_modules/*
 samples/Daarto.WebUI/package-lock.json
 
 # End of https://www.gitignore.io/api/visualstudio
-db/.vagrant/machines/default/virtualbox/creator_uid
-db/.vagrant/machines/default/virtualbox/id
-db/.vagrant/machines/default/virtualbox/index_uuid
-db/.vagrant/machines/default/virtualbox/private_key
-db/.vagrant/machines/default/virtualbox/synced_folders
-db/.vagrant/machines/default/virtualbox/vagrant_cwd
-db/.vagrant/rgloader/loader.rb
 db/.vagrant/

@@ -6,7 +6,7 @@ using D = Dapper;
 
 namespace Identity.Dapper.Postgres
 {
-    internal class SqlConnectionFactory : IDatabaseConnectionFactory
+    public class SqlConnectionFactory : IDatabaseConnectionFactory
     {
         private readonly string _connectionString;
 
