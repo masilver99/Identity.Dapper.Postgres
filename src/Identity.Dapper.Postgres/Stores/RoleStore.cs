@@ -99,14 +99,14 @@ namespace Identity.Dapper.Postgres.Stores
         #endregion
 
         #region IRoleClaimStore<ApplicationRole> Implementation
-        public async Task<IList<Claim>> GetClaimsAsync(ApplicationRole role, CancellationToken cancellationToken = default(CancellationToken)) {
+        public async Task<IList<Claim>> GetClaimsAsync(ApplicationRole role, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             role.ThrowIfNull(nameof(role));
             role.Claims = role.Claims ?? (await _roleClaimsTable.GetClaimsAsync(role.Id)).ToList();
             return role.Claims;
         }
 
-        public async Task AddClaimAsync(ApplicationRole role, Claim claim, CancellationToken cancellationToken = default(CancellationToken)) {
+        public async Task AddClaimAsync(ApplicationRole role, Claim claim, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             role.ThrowIfNull(nameof(role));
             claim.ThrowIfNull(nameof(claim));
@@ -121,7 +121,7 @@ namespace Identity.Dapper.Postgres.Stores
             }
         }
 
-        public async Task RemoveClaimAsync(ApplicationRole role, Claim claim, CancellationToken cancellationToken = default(CancellationToken)) {
+        public async Task RemoveClaimAsync(ApplicationRole role, Claim claim, CancellationToken cancellationToken = default) {
             cancellationToken.ThrowIfCancellationRequested();
             role.ThrowIfNull(nameof(role));
             claim.ThrowIfNull(nameof(claim));
