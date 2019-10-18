@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Dapper;
-using Identity.Dapper.Postgres.Stores;
+using Identity.Dapper.Postgres.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Tables
@@ -17,6 +17,8 @@ namespace Identity.Dapper.Postgres.Tables
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
+             
+
             const string command = "INSERT INTO identity_users " +
                                    " (id, username, normalized_username, email, normalized_email, email_confirmed, password_hash, security_stamp, concurrency_stamp, " +
                                    "phone_number, phone_number_confirmed, two_factor_enabled, lockout_end, lockout_enabled, access_failed_count) " +
