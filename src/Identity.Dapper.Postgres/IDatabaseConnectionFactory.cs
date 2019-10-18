@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Identity.Dapper.Postgres
 {
-    internal interface IDatabaseConnectionFactory
+    public interface IDatabaseConnectionFactory
     {
         Task<IDbConnection> CreateConnectionAsync();
     }

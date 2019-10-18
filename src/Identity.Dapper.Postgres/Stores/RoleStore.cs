@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Stores
 {
-    internal class RoleStore : IQueryableRoleStore<ApplicationRole>, IRoleClaimStore<ApplicationRole>, IRoleStore<ApplicationRole>
+    public class RoleStore : IQueryableRoleStore<ApplicationRole>, IRoleClaimStore<ApplicationRole>, IRoleStore<ApplicationRole>
     {
         private readonly RolesTable _rolesTable;
         private readonly RoleClaimsTable _roleClaimsTable;
