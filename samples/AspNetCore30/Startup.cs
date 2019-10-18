@@ -28,12 +28,6 @@ namespace AspNetCore30
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));*/
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddDapperStores(Configuration.GetConnectionString("DefaultConnection"));
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddDefaultTokenProviders().AddDefaultUI(); 
             services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
@@ -48,7 +42,6 @@ namespace AspNetCore30
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                /* app.UseDatabaseErrorPage(); */
             }
             else
             {

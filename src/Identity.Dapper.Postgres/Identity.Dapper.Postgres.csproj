@@ -1,25 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>Identity.Dapper.Postgres</AssemblyName>
-    <AssemblyTitle>AspNetCore.Identity.Dapper</AssemblyTitle>
-    <Authors>Georgios Manoltzas</Authors>
-    <Copyright>Copyright (c) 2018 Georgios Manoltzas</Copyright>
-    <Description>Dapper implementation of ASP.NET Core Identity stores.</Description>
+    <AssemblyTitle>Identity.Dapper.Postgres</AssemblyTitle>
+    <Authors>Michael Silver &amp; Georgios Manoltzas</Authors>
+    <Copyright>Copyright (c) 2019 Michael Silver &amp; Georgios Manoltzas</Copyright>
+    <Description>Dapper &amp; Postgres implementation of ASP.NET Core Identity stores.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup Label="Package">
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>AspNetCore.Identity.DapperOrm</PackageId>
-    <PackageTags>AspNetCore;Dapper;Identity</PackageTags>
+    <PackageId>Identity.Dapper.Postgres</PackageId>
+    <PackageTags>AspNetCore;Dapper;Identity;Postgres</PackageTags>
     <PackageReleaseNotes>Initial release of the library.</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/giorgos07/Daarto/tree/master/src/AspNetCore.Identity.Dapper</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/giorgos07/Daarto/tree/master/src/AspNetCore.Identity.Dapper/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/masilver99/Identity.Dapper.Postgres</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/masilver99/Identity.Dapper.Postgres/blob/master/src/Identity.Dapper.Postgres/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/giorgos07/Daarto/tree/master/src/AspNetCore.Identity.Dapper</RepositoryUrl>
+    <RepositoryUrl>https://github.com/masilver99/Identity.Dapper.Postgres</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
