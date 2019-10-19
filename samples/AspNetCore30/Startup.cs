@@ -31,7 +31,7 @@ namespace AspNetCore30
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddDefaultTokenProviders().AddDefaultUI(); 
             services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
-            services.AddTransient<IDatabaseConnectionFactory>(provider => new SqlConnectionFactory(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IDatabaseConnectionFactory>(provider => new PostgresConnectionFactory(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

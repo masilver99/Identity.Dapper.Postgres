@@ -17,7 +17,7 @@ namespace Identity.Dapper.Postgres.Tables
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {
-             
+
 
             const string command = "INSERT INTO identity_users " +
                                    " (id, username, normalized_username, email, normalized_email, email_confirmed, password_hash, security_stamp, concurrency_stamp, " +

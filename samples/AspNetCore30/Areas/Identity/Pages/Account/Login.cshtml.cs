@@ -65,7 +65,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -77,7 +77,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {
@@ -127,7 +127,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { userId = userId, code = code },
+                values: new { userId, code },
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,

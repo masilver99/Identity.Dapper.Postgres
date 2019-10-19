@@ -12,7 +12,8 @@ namespace AspNetCore30.Areas.Identity.Pages.Account.Manage
 {
     public class TwoFactorAuthenticationModel : PageModel
     {
-        private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
+        //Doesn't appear to be used
+        //private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;

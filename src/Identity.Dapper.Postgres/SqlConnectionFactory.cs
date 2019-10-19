@@ -6,12 +6,20 @@ using D = Dapper;
 
 namespace Identity.Dapper.Postgres
 {
-    public class SqlConnectionFactory : IDatabaseConnectionFactory
+    /// <summary>
+    /// 
+    /// </summary>
+    public class PostgresConnectionFactory : IDatabaseConnectionFactory
     {
         private readonly string _connectionString;
 
-        public SqlConnectionFactory(string connectionString) => _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="connectionString">Database connection string</param>
+        public PostgresConnectionFactory(string connectionString) => _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
 
+        /// <inheritdoc/>
         public async Task<IDbConnection> CreateConnectionAsync() 
         {
             var sqlConnection = new NpgsqlConnection(_connectionString);

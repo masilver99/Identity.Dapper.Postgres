@@ -69,7 +69,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
@@ -111,7 +111,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             // Get the information about the user from the external login provider
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -138,7 +138,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account
                         var callbackUrl = Url.Page(
                             "/Account/ConfirmEmail",
                             pageHandler: null,
-                            values: new { area = "Identity", userId = userId, code = code },
+                            values: new { area = "Identity", userId, code },
                             protocol: Request.Scheme);
 
                         await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",

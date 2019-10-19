@@ -82,7 +82,7 @@ namespace AspNetCore30.Areas.Identity.Pages.Account.Manage
             }
 
             // Strip spaces and hypens
-            var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+            string verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
                 user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);

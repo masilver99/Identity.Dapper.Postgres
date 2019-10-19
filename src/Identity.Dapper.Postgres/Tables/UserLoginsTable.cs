@@ -14,12 +14,14 @@ namespace Identity.Dapper.Postgres.Tables
 
         public UserLoginsTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
-        public async Task<IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user) {
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user)
+        {
             const string command = "SELECT * " +
                                    "FROM identity_user_logins " +
                                    "WHERE user_id = @UserId;";
 
-            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync()) {
+            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync())
+            {
                 return (
                     await sqlConnection.QueryAsync<UserLogin>(command, new { UserId = user.Id })
                 )
@@ -28,7 +30,8 @@ namespace Identity.Dapper.Postgres.Tables
             }
         }
 
-        public async Task<ApplicationUser> FindByLoginAsync(string loginProvider, string providerKey) {
+        public async Task<ApplicationUser> FindByLoginAsync(string loginProvider, string providerKey)
+        {
             string[] command =
             {
                 "SELECT user_id " +
@@ -36,13 +39,16 @@ namespace Identity.Dapper.Postgres.Tables
                 "WHERE login_provider = @LoginProvider AND provider_key = @ProviderKey;"
             };
 
-            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync()) {
-                var userId = await sqlConnection.QuerySingleOrDefaultAsync<Guid?>(command[0], new {
+            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync())
+            {
+                var userId = await sqlConnection.QuerySingleOrDefaultAsync<Guid?>(command[0], new
+                {
                     LoginProvider = loginProvider,
                     ProviderKey = providerKey
                 });
 
-                if (userId == null) {
+                if (userId == null)
+                {
                     return null;
                 }
 

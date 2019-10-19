@@ -1,9 +1,11 @@
-﻿namespace Identity.Dapper.Postgres.Models
+﻿using System;
+
+namespace Identity.Dapper.Postgres.Models
 {
     internal class RoleClaim
     {
-        public string Id { get; set; }
-        public string RoleId { get; set; }
+        public Guid Id { get; set; }
+        public Guid RoleId { get; set; }
         public string ClaimType { get; set; }
         public string ClaimValue { get; set; }
     }

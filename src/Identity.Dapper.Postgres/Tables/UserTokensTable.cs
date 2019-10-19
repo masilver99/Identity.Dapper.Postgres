@@ -12,13 +12,16 @@ namespace Identity.Dapper.Postgres.Tables
 
         public UserTokensTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
-        public async Task<IEnumerable<UserToken>> GetTokensAsync(Guid userId) {
+        public async Task<IEnumerable<UserToken>> GetTokensAsync(Guid userId)
+        {
             const string command = "SELECT * " +
                                    "FROM identity_user_tokens " +
                                    "WHERE user_id = @UserId;";
 
-            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync()) {
-                return await sqlConnection.QueryAsync<UserToken>(command, new {
+            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync())
+            {
+                return await sqlConnection.QueryAsync<UserToken>(command, new
+                {
                     UserId = userId
                 });
             }

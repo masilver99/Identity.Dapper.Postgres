@@ -36,7 +36,7 @@ CREATE TABLE identity_users (
 );
 
 CREATE TABLE identity_role_claims (
-    id integer NOT NULL PRIMARY KEY,
+    id uuid NOT NULL PRIMARY KEY,
     role_id uuid NOT NULL,
     claim_type text NULL,
     claim_value text NULL,
@@ -44,7 +44,7 @@ CREATE TABLE identity_role_claims (
 );
 
 CREATE TABLE identity_user_claims (
-    id integer NOT NULL PRIMARY KEY,
+    id uuid NOT NULL PRIMARY KEY,
     user_id uuid NOT NULL,
     claim_type text NULL,
     claim_value text NULL,

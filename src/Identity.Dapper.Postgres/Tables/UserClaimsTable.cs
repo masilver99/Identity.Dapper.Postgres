@@ -13,12 +13,14 @@ namespace Identity.Dapper.Postgres.Tables
 
         public UserClaimsTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
-        public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user) {
+        public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user)
+        {
             const string command = "SELECT * " +
                                    "FROM identity_user_claims " +
                                    "WHERE user_id = @UserId;";
 
-            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync()) {
+            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync())
+            {
                 return (
                     await sqlConnection.QueryAsync<UserClaim>(command, new { UserId = user.Id })
                 )

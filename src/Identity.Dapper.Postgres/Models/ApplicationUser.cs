@@ -7,6 +7,11 @@ namespace Identity.Dapper.Postgres.Models
 {
     public class ApplicationUser
     {
+        public ApplicationUser()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public string NormalizedUserName { get; set; }
