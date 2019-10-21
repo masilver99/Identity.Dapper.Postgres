@@ -10,7 +10,10 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Stores
 {
-     public class UserStore : IQueryableUserStore<ApplicationUser>, IUserEmailStore<ApplicationUser>, IUserLoginStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>,
+    /// <summary>
+    /// Represents access to User data
+    /// </summary>
+    public class UserStore : IQueryableUserStore<ApplicationUser>, IUserEmailStore<ApplicationUser>, IUserLoginStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>,
         IUserPhoneNumberStore<ApplicationUser>, IUserTwoFactorStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>, IUserClaimStore<ApplicationUser>,
         IUserLockoutStore<ApplicationUser>, IUserRoleStore<ApplicationUser>, IUserAuthenticationTokenStore<ApplicationUser>, IUserStore<ApplicationUser>
     {
@@ -126,6 +129,7 @@ namespace Identity.Dapper.Postgres.Stores
             return _usersTable.UpdateAsync(user);
         }
 
+        /// <inheritdoc/>
         public void Dispose() { /* Nothing to dispose. */ }
         #endregion IUserStore<ApplicationUser> Implementation
 

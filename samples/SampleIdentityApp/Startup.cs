@@ -38,11 +38,6 @@ namespace SampleIdentityApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            /*
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DbConnection")));
-            */
             // Get the connection string from appsettings.json file.
             var connectionString = Configuration.GetConnectionString("DbConnection");
 

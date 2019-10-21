@@ -1,4 +1,5 @@
-﻿@inject SignInManager<ApplicationUser> SignInManager
+﻿@using Identity.Dapper.Postgres.Models
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

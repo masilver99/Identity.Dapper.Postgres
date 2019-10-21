@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>aspnet-AspNetCore30-FBF679A1-7B07-4D60-9076-7DC111546EE4</UserSecretsId>
+    <AssemblyName>AspNetCore30</AssemblyName>
   </PropertyGroup>
 
 

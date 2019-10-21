@@ -10,12 +10,18 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Stores
 {
-
+    /// <summary>
+    /// Store for Application Roles.  Makes calls to the table objects
+    /// </summary>
     public class RoleStore : IQueryableRoleStore<ApplicationRole>, IRoleClaimStore<ApplicationRole>, IRoleStore<ApplicationRole>
     {
         private readonly RolesTable _rolesTable;
         private readonly RoleClaimsTable _roleClaimsTable;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="databaseConnectionFactory"></param>
         public RoleStore(IDatabaseConnectionFactory databaseConnectionFactory)
         {
             _rolesTable = new RolesTable(databaseConnectionFactory);
@@ -119,6 +125,7 @@ namespace Identity.Dapper.Postgres.Stores
             return _rolesTable.FindByNameAsync(normalizedRoleName);
         }
 
+        /// <inheritdoc/>
         public void Dispose() { /* Nothing to dispose. */ }
         #endregion
 
