@@ -28,10 +28,10 @@ namespace AspNetCore30
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<ApplicationUser, ApplicationRole>().AddDefaultTokenProviders().AddDefaultUI(); 
-            services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
-            services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
-            services.AddTransient<IDatabaseConnectionFactory>(provider => new PostgresConnectionFactory(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddDapperStores(Configuration.GetConnectionString("DefaultConnection"))
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

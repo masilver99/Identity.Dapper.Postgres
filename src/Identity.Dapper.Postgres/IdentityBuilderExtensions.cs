@@ -8,6 +8,7 @@ using Identity.Dapper.Postgres.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Identity.Dapper.Postgres.Tables;
 
 namespace Identity.Dapper.Postgres
 {
@@ -22,16 +23,24 @@ namespace Identity.Dapper.Postgres
         /// <param name="builder">Helper functions for configuring identity services.</param>
         /// <param name="connectionString">The database connection string.</param>
         /// <returns>The <see cref="IdentityBuilder"/> instance this method extends.</returns>
-        public static IdentityBuilder AddDapperStores(this IdentityBuilder builder, string connectionString) {
+        public static IdentityBuilder AddDapperStores(this IdentityBuilder builder, string connectionString) 
+        {
             AddStores(builder.Services, connectionString);
             return builder;
         }
 
-        private static void AddStores(IServiceCollection services,  string connectionString) {
-
-                services.AddScoped<IUserStore<ApplicationUser>, UserStore>();
-                services.AddScoped<IRoleStore<ApplicationRole>, RoleStore>();
-                services.AddScoped<IDatabaseConnectionFactory>(provider => new PostgresConnectionFactory(connectionString));
+        private static void AddStores(IServiceCollection services,  string connectionString) 
+        {
+            services.AddTransient(typeof(UsersTable));
+            services.AddTransient(typeof(RoleClaimsTable));
+            services.AddTransient(typeof(RolesTable));
+            services.AddTransient(typeof(UserClaimsTable));
+            services.AddTransient(typeof(UserLoginsTable));
+            services.AddTransient(typeof(UserRolesTable));
+            services.AddTransient(typeof(UserTokensTable));
+            services.AddScoped<IDatabaseConnectionFactory>(provider => new PostgresConnectionFactory(connectionString));
+            services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
+            services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
         }
     }
 }

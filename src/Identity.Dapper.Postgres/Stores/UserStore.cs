@@ -10,6 +10,9 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Stores
 {
+    //I'm making some assumptions about when to make a database call:
+    // 1) Don't update db for single fields of the user
+    // 2) 
     /// <summary>
     /// Represents access to User data
     /// </summary>
@@ -28,26 +31,34 @@ namespace Identity.Dapper.Postgres.Stores
         IUserAuthenticatorKeyStore<ApplicationUser>,
         IUserStore<ApplicationUser>
     {
-        private readonly UsersTable _usersTable;
-        private readonly UserRolesTable _usersRolesTable;
-        private readonly RolesTable _rolesTable;
-        private readonly UserClaimsTable _usersClaimsTable;
-        private readonly UserLoginsTable _usersLoginsTable;
-        private readonly UserTokensTable _userTokensTable;
+        internal readonly UsersTable _usersTable;
+        internal readonly UserRolesTable _userRolesTable;
+        internal readonly RolesTable _rolesTable;
+        internal readonly UserClaimsTable _userClaimsTable;
+        internal readonly UserLoginsTable _userLoginsTable;
+        internal readonly UserTokensTable _userTokensTable;
 
         /// <inheritdoc/>
-        public UserStore(IDatabaseConnectionFactory databaseConnectionFactory)
+        public UserStore(
+            UsersTable usersTable,
+            UserRolesTable userRolesTable,
+            RolesTable rolesTable,
+            UserClaimsTable userClaimsTable,
+            UserLoginsTable userLoginsTable,
+            UserTokensTable userTokensTable
+            )
         {
-            _usersTable = new UsersTable(databaseConnectionFactory);
-            _usersRolesTable = new UserRolesTable(databaseConnectionFactory);
-            _rolesTable = new RolesTable(databaseConnectionFactory);
-            _usersClaimsTable = new UserClaimsTable(databaseConnectionFactory);
-            _usersLoginsTable = new UserLoginsTable(databaseConnectionFactory);
-            _userTokensTable = new UserTokensTable(databaseConnectionFactory);
+            _usersTable = usersTable;
+            _userRolesTable = userRolesTable;
+            _rolesTable = rolesTable;
+            _userClaimsTable = userClaimsTable;
+            _userLoginsTable = userLoginsTable;
+            _userTokensTable = userTokensTable;
         }
 
         #region IQueryableUserStore<ApplicationUser> Implementation
         /// <inheritdoc/>
+        //TODO: Don't like this at all.  Could be very expensive
         public IQueryable<ApplicationUser> Users => Task.Run(() => _usersTable.GetAllUsers()).Result.AsQueryable();
         #endregion
 
@@ -55,6 +66,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             return _usersTable.CreateAsync(user);
@@ -63,6 +75,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             return _usersTable.DeleteAsync(user);
@@ -71,10 +84,10 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken = default)
         {
+            //complete
             cancellationToken.ThrowIfCancellationRequested();
-            var isValidGuid = Guid.TryParse(userId, out var userGuid);
 
-            if (!isValidGuid)
+            if (!Guid.TryParse(userId, out var userGuid))
             {
                 return Task.FromResult<ApplicationUser>(null);
             }
@@ -85,6 +98,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default)
         {
+            //complete
             cancellationToken.ThrowIfCancellationRequested();
             return _usersTable.FindByNameAsync(normalizedUserName);
         }
@@ -92,6 +106,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             return Task.FromResult(user.NormalizedUserName);
@@ -100,6 +115,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<string> GetUserIdAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             return Task.FromResult(user.Id.ToString());
@@ -108,6 +124,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<string> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             return Task.FromResult(user.UserName);
@@ -116,6 +133,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             user.NormalizedUserName = normalizedName;
@@ -125,6 +143,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             user.UserName = userName;
@@ -134,6 +153,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
@@ -241,7 +261,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            user.Logins = user.Logins ?? (await _usersLoginsTable.GetLoginsAsync(user)).ToList();
+            user.Logins = user.Logins ?? (await _userLoginsTable.GetLoginsAsync(user)).ToList();
             return user.Logins;
         }
 
@@ -250,7 +270,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             loginProvider.ThrowIfNull(nameof(loginProvider));
-            return _usersLoginsTable.FindByLoginAsync(loginProvider, providerKey);
+            return _userLoginsTable.FindByLoginAsync(loginProvider, providerKey);
         }
         #endregion IUserLoginStore<ApplicationUser> Implementation
 
@@ -364,7 +384,7 @@ namespace Identity.Dapper.Postgres.Stores
             //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            return await _usersClaimsTable.GetClaimsAsync(user);
+            return await _userClaimsTable.GetClaimsAsync(user);
         }
 
         /// <inheritdoc/>
@@ -511,7 +531,7 @@ namespace Identity.Dapper.Postgres.Stores
                 return;
             }
 
-            user.Roles = user.Roles ?? (await _usersRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
 
             if (await IsInRoleAsync(user, roleName, cancellationToken))
             {
@@ -531,7 +551,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             roleName.ThrowIfNull(nameof(roleName));
-            user.Roles = user.Roles ?? (await _usersRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
             var role = user.Roles.SingleOrDefault(x => x.RoleName == roleName);
 
             if (role != null)
@@ -545,7 +565,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            user.Roles = user.Roles ?? (await _usersRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
             return user.Roles.Select(x => x.RoleName).ToList();
         }
 
@@ -555,7 +575,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             roleName.ThrowIfNull(nameof(roleName));
-            user.Roles = user.Roles ?? (await _usersRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
             return user.Roles.Any(x => x.RoleName == roleName);
         }
 

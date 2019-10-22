@@ -5,7 +5,7 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class UserRolesTable
+    public class UserRolesTable
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class UserLoginsTable
+    public class UserLoginsTable
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 

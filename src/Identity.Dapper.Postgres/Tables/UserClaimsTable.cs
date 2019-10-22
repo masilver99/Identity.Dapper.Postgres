@@ -7,7 +7,7 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class UserClaimsTable
+    public class UserClaimsTable
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 

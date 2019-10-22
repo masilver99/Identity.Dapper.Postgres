@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class RolesTable
+    public class RolesTable
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class UsersTable
+    public class UsersTable
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
@@ -126,6 +126,7 @@ namespace Identity.Dapper.Postgres.Tables
 
         public async Task<IdentityResult> UpdateAsync(ApplicationUser user)
         {
+            //NOTE: Removing the UOW pattern, so comments below no longer apply
             // The implementation here might look a little strange, however there is a reason for this.
             // ASP.NET Core Identity stores follow a UOW (Unit of Work) pattern which practically means that when an operation is called it does not necessarily writes to the database.
             // It tracks the changes made and finally commits to the database. UserStore methods just manipulate the user and only CreateAsync, UpdateAsync and DeleteAsync of IUserStore<>
@@ -137,10 +138,9 @@ namespace Identity.Dapper.Postgres.Tables
                 "phone_number_confirmed = @PhoneNumberConfirmed, two_factor_enabled = @TwoFactorEnabled, lockout_end = @LockoutEnd, lockout_enabled = @LockoutEnabled, " +
                 "access_failed_count = @AccessFailedCount " +
                 "WHERE id = @Id;";
-
-            using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync())
+            try
             {
-                using (var transaction = sqlConnection.BeginTransaction())
+                using (var sqlConnection = await _databaseConnectionFactory.CreateConnectionAsync())
                 {
                     await sqlConnection.ExecuteAsync(updateUserCommand, new
                     {
@@ -159,128 +159,18 @@ namespace Identity.Dapper.Postgres.Tables
                         user.LockoutEnabled,
                         user.AccessFailedCount,
                         user.Id
-                    }, transaction);
-
-                    if (user.Claims?.Count() > 0)
-                    {
-                        const string deleteClaimsCommand = "DELETE " +
-                                                           "FROM identity_user_claims " +
-                                                           "WHERE user_id = @UserId;";
-
-                        await sqlConnection.ExecuteAsync(deleteClaimsCommand, new
-                        {
-                            UserId = user.Id
-                        }, transaction);
-
-                        const string insertClaimsCommand =
-                            "INSERT INTO identity_user_claims (user_id, claim_type, claim_value) " +
-                            "VALUES (@UserId, @ClaimType, @ClaimValue);";
-
-                        await sqlConnection.ExecuteAsync(insertClaimsCommand, user.Claims.Select(x => new
-                        {
-                            UserId = user.Id,
-                            ClaimType = x.Type,
-                            ClaimValue = x.Value
-                        }), transaction);
-                    }
-
-                    if (user.Logins?.Count() > 0)
-                    {
-                        const string deleteLoginsCommand = "DELETE " +
-                                                           "FROM identity_user_logins " +
-                                                           "WHERE user_id = @UserId;";
-
-                        await sqlConnection.ExecuteAsync(deleteLoginsCommand, new
-                        {
-                            UserId = user.Id
-                        }, transaction);
-
-                        const string insertLoginsCommand =
-                            "INSERT INTO identity_user_logins (login_provider, provider_key, provider_display_name, user_id) " +
-                            "VALUES (@LoginProvider, @ProviderKey, @ProviderDisplayName, @UserId);";
-
-                        await sqlConnection.ExecuteAsync(insertLoginsCommand, user.Logins.Select(x => new
-                        {
-                            x.LoginProvider,
-                            x.ProviderKey,
-                            x.ProviderDisplayName,
-                            UserId = user.Id
-                        }), transaction);
-                    }
-
-                    if (user.Roles?.Count() > 0)
-                    {
-                        const string deleteRolesCommand = "DELETE " +
-                                                          "FROM identity_user_roles " +
-                                                          "WHERE user_id = @UserId;";
-
-                        await sqlConnection.ExecuteAsync(deleteRolesCommand, new
-                        {
-                            UserId = user.Id
-                        }, transaction);
-
-                        const string insertRolesCommand = "INSERT INTO identity_user_roles (user_id, role_id) " +
-                                                          "VALUES (@UserId, @RoleId);";
-
-                        await sqlConnection.ExecuteAsync(insertRolesCommand, user.Roles.Select(x => new
-                        {
-                            UserId = user.Id,
-                            x.RoleId
-                        }), transaction);
-                    }
-
-                    if (user.Tokens?.Count() > 0)
-                    {
-                        const string deleteTokensCommand = "DELETE " +
-                                                           "FROM identity_user_tokens " +
-                                                           "WHERE user_id = @UserId;";
-
-                        await sqlConnection.ExecuteAsync(deleteTokensCommand, new
-                        {
-                            UserId = user.Id
-                        }, transaction);
-
-                        const string insertTokensCommand =
-                            "INSERT INTO identity_user_tokens (user_id, login_provider, name, value) " +
-                            "VALUES (@UserId, @LoginProvider, @Name, @Value);";
-
-                        await sqlConnection.ExecuteAsync(insertTokensCommand, user.Tokens.Select(x => new
-                        {
-                            x.UserId,
-                            x.LoginProvider,
-                            x.Name,
-                            x.Value
-                        }), transaction);
-                    }
-
-                    try
-                    {
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        try
-                        {
-                            transaction.Rollback();
-                        }
-                        catch
-                        {
-                            return IdentityResult.Failed(new IdentityError
-                            {
-                                Code = nameof(UpdateAsync),
-                                Description =
-                                    $"User with email {user.Email} could not be updated. Operation could not be rolled back."
-                            });
-                        }
-
-                        return IdentityResult.Failed(new IdentityError
-                        {
-                            Code = nameof(UpdateAsync),
-                            Description =
-                                $"User with email {user.Email} could not be updated. Operation was rolled back."
-                        });
-                    }
+                    });
                 }
+            }
+            catch
+            {
+                //TODO: Not sure we should be eating exceptions
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Code = nameof(UpdateAsync),
+                    Description =
+                        $"User with email {user.Email} could not be updated. Operation was rolled back."
+                });
             }
 
             return IdentityResult.Success;

@@ -2,7 +2,7 @@ using System;
 
 namespace Identity.Dapper.Postgres.Models
 {
-    internal class UserToken
+    public class UserToken
     {
         public Guid UserId { get; set; }
         public string LoginProvider { get; set; }

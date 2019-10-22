@@ -6,7 +6,7 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class UserTokensTable
+    public class UserTokensTable
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
