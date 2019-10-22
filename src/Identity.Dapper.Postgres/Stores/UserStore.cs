@@ -13,9 +13,20 @@ namespace Identity.Dapper.Postgres.Stores
     /// <summary>
     /// Represents access to User data
     /// </summary>
-    public class UserStore : IQueryableUserStore<ApplicationUser>, IUserEmailStore<ApplicationUser>, IUserLoginStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>,
-        IUserPhoneNumberStore<ApplicationUser>, IUserTwoFactorStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>, IUserClaimStore<ApplicationUser>,
-        IUserLockoutStore<ApplicationUser>, IUserRoleStore<ApplicationUser>, IUserAuthenticationTokenStore<ApplicationUser>, IUserStore<ApplicationUser>
+    public class UserStore : 
+        IQueryableUserStore<ApplicationUser>, 
+        IUserEmailStore<ApplicationUser>, 
+        IUserLoginStore<ApplicationUser>, 
+        IUserPasswordStore<ApplicationUser>,
+        IUserPhoneNumberStore<ApplicationUser>, 
+        IUserTwoFactorStore<ApplicationUser>, 
+        IUserSecurityStampStore<ApplicationUser>,
+        IUserClaimStore<ApplicationUser>,
+        IUserLockoutStore<ApplicationUser>, 
+        IUserRoleStore<ApplicationUser>, 
+        IUserAuthenticationTokenStore<ApplicationUser>,
+        IUserAuthenticatorKeyStore<ApplicationUser>,
+        IUserStore<ApplicationUser>
     {
         private readonly UsersTable _usersTable;
         private readonly UserRolesTable _usersRolesTable;
@@ -350,10 +361,10 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user, CancellationToken cancellationToken = default)
         {
+            //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            user.Claims = user.Claims ?? (await _usersClaimsTable.GetClaimsAsync(user)).ToList();
-            return user.Claims;
+            return await _usersClaimsTable.GetClaimsAsync(user);
         }
 
         /// <inheritdoc/>
@@ -560,6 +571,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public async Task SetTokenAsync(ApplicationUser user, string loginProvider, string name, string value, CancellationToken cancellationToken = default)
         {
+            //TODO: This needs to be reworked.  It's never saved to the database
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             loginProvider.ThrowIfNull(nameof(loginProvider));
@@ -577,6 +589,7 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public async Task RemoveTokenAsync(ApplicationUser user, string loginProvider, string name, CancellationToken cancellationToken = default)
         {
+            //TODO: This need to be reworked.  It's never saved to the database
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             loginProvider.ThrowIfNull(nameof(loginProvider));
@@ -588,12 +601,27 @@ namespace Identity.Dapper.Postgres.Stores
         /// <inheritdoc/>
         public async Task<string> GetTokenAsync(ApplicationUser user, string loginProvider, string name, CancellationToken cancellationToken = default)
         {
+            //TODO: Needs to be converted to a single query.
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             loginProvider.ThrowIfNull(nameof(loginProvider));
             name.ThrowIfNull(nameof(name));
             user.Tokens = user.Tokens ?? (await _userTokensTable.GetTokensAsync(user.Id)).ToList();
             return user.Tokens.SingleOrDefault(x => x.LoginProvider == loginProvider && x.Name == name)?.Value;
+        }
+        #endregion
+
+        #region IUserAuthenticatorKeyStore<ApplicationUser> Implementation
+        /// <inheritdoc/>
+        public Task SetAuthenticatorKeyAsync(ApplicationUser user, string key, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc/>
+        public Task<string> GetAuthenticatorKeyAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
