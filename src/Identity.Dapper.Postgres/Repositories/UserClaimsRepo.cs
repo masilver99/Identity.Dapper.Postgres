@@ -7,11 +7,11 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    public class UserClaimsTable
+    public class UserClaimsRepo
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
-        public UserClaimsTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
+        public UserClaimsRepo(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
         public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user)
         {

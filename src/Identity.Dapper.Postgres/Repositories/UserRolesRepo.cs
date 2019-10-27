@@ -5,11 +5,11 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    public class UserRolesTable
+    public class UserRolesRepo
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
-        public UserRolesTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
+        public UserRolesRepo(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
         public async Task<IEnumerable<UserRole>> GetRolesAsync(ApplicationUser user)
         {

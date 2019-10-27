@@ -31,35 +31,35 @@ namespace Identity.Dapper.Postgres.Stores
         IUserAuthenticatorKeyStore<ApplicationUser>,
         IUserStore<ApplicationUser>
     {
-        internal readonly UsersTable _usersTable;
-        internal readonly UserRolesTable _userRolesTable;
-        internal readonly RolesTable _rolesTable;
-        internal readonly UserClaimsTable _userClaimsTable;
-        internal readonly UserLoginsTable _userLoginsTable;
-        internal readonly UserTokensTable _userTokensTable;
+        internal readonly UsersRepo _usersRepo;
+        internal readonly UserRolesRepo _userRolesRepo;
+        internal readonly RolesRepo _rolesRepo;
+        internal readonly UserClaimsRepo _userClaimsRepo;
+        internal readonly UserLoginsRepo _userLoginsRepo;
+        internal readonly UserTokensRepo _userTokensRepo;
 
         /// <inheritdoc/>
         public UserStore(
-            UsersTable usersTable,
-            UserRolesTable userRolesTable,
-            RolesTable rolesTable,
-            UserClaimsTable userClaimsTable,
-            UserLoginsTable userLoginsTable,
-            UserTokensTable userTokensTable
+            UsersRepo usersRepo,
+            UserRolesRepo userRolesRepo,
+            RolesRepo rolesRepo,
+            UserClaimsRepo userClaimsRepo,
+            UserLoginsRepo userLoginsRepo,
+            UserTokensRepo userTokensRepo
             )
         {
-            _usersTable = usersTable;
-            _userRolesTable = userRolesTable;
-            _rolesTable = rolesTable;
-            _userClaimsTable = userClaimsTable;
-            _userLoginsTable = userLoginsTable;
-            _userTokensTable = userTokensTable;
+            _usersRepo = usersRepo.ThrowIfNull(nameof(usersRepo));
+            _userRolesRepo = userRolesRepo.ThrowIfNull(nameof(userRolesRepo));
+            _rolesRepo = rolesRepo.ThrowIfNull(nameof(rolesRepo));
+            _userClaimsRepo = userClaimsRepo.ThrowIfNull(nameof(userClaimsRepo));
+            _userLoginsRepo = userLoginsRepo.ThrowIfNull(nameof(userLoginsRepo));
+            _userTokensRepo = userTokensRepo.ThrowIfNull(nameof(userTokensRepo));
         }
 
         #region IQueryableUserStore<ApplicationUser> Implementation
         /// <inheritdoc/>
         //TODO: Don't like this at all.  Could be very expensive
-        public IQueryable<ApplicationUser> Users => Task.Run(() => _usersTable.GetAllUsers()).Result.AsQueryable();
+        public IQueryable<ApplicationUser> Users => Task.Run(() => _usersRepo.GetAllUsers()).Result.AsQueryable();
         #endregion
 
         #region IUserStore<ApplicationUser> Implementation
@@ -69,7 +69,7 @@ namespace Identity.Dapper.Postgres.Stores
             //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            return _usersTable.CreateAsync(user);
+            return _usersRepo.CreateAsync(user);
         }
 
         /// <inheritdoc/>
@@ -78,7 +78,7 @@ namespace Identity.Dapper.Postgres.Stores
             //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            return _usersTable.DeleteAsync(user);
+            return _usersRepo.DeleteAsync(user);
         }
 
         /// <inheritdoc/>
@@ -92,7 +92,7 @@ namespace Identity.Dapper.Postgres.Stores
                 return Task.FromResult<ApplicationUser>(null);
             }
 
-            return _usersTable.FindByIdAsync(userGuid);
+            return _usersRepo.FindByIdAsync(userGuid);
         }
 
         /// <inheritdoc/>
@@ -100,7 +100,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             //complete
             cancellationToken.ThrowIfCancellationRequested();
-            return _usersTable.FindByNameAsync(normalizedUserName);
+            return _usersRepo.FindByNameAsync(normalizedUserName);
         }
 
         /// <inheritdoc/>
@@ -157,7 +157,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
-            return _usersTable.UpdateAsync(user);
+            return _usersRepo.UpdateAsync(user);
         }
 
         /// <inheritdoc/>
@@ -203,7 +203,7 @@ namespace Identity.Dapper.Postgres.Stores
         public Task<ApplicationUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return _usersTable.FindByEmailAsync(normalizedEmail);
+            return _usersRepo.FindByEmailAsync(normalizedEmail);
         }
 
         /// <inheritdoc/>
@@ -261,7 +261,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            user.Logins = user.Logins ?? (await _userLoginsTable.GetLoginsAsync(user)).ToList();
+            user.Logins = user.Logins ?? (await _userLoginsRepo.GetLoginsAsync(user)).ToList();
             return user.Logins;
         }
 
@@ -270,7 +270,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             loginProvider.ThrowIfNull(nameof(loginProvider));
-            return _userLoginsTable.FindByLoginAsync(loginProvider, providerKey);
+            return _userLoginsRepo.FindByLoginAsync(loginProvider, providerKey);
         }
         #endregion IUserLoginStore<ApplicationUser> Implementation
 
@@ -384,7 +384,7 @@ namespace Identity.Dapper.Postgres.Stores
             //Complete
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            return await _userClaimsTable.GetClaimsAsync(user);
+            return await _userClaimsRepo.GetClaimsAsync(user);
         }
 
         /// <inheritdoc/>
@@ -450,7 +450,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             claim.ThrowIfNull(nameof(claim));
-            return _usersTable.GetUsersForClaimAsync(claim);
+            return _usersRepo.GetUsersForClaimAsync(claim);
         }
         #endregion IUserClaimStore<ApplicationUser> 
 
@@ -524,14 +524,14 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             roleName.ThrowIfNull(nameof(roleName));
-            var role = await _rolesTable.FindByNameAsync(roleName);
+            var role = await _rolesRepo.FindByNameAsync(roleName);
 
             if (role == null)
             {
                 return;
             }
 
-            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesRepo.GetRolesAsync(user)).ToList();
 
             if (await IsInRoleAsync(user, roleName, cancellationToken))
             {
@@ -551,7 +551,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             roleName.ThrowIfNull(nameof(roleName));
-            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesRepo.GetRolesAsync(user)).ToList();
             var role = user.Roles.SingleOrDefault(x => x.RoleName == roleName);
 
             if (role != null)
@@ -565,7 +565,7 @@ namespace Identity.Dapper.Postgres.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
-            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesRepo.GetRolesAsync(user)).ToList();
             return user.Roles.Select(x => x.RoleName).ToList();
         }
 
@@ -575,7 +575,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             roleName.ThrowIfNull(nameof(roleName));
-            user.Roles = user.Roles ?? (await _userRolesTable.GetRolesAsync(user)).ToList();
+            user.Roles = user.Roles ?? (await _userRolesRepo.GetRolesAsync(user)).ToList();
             return user.Roles.Any(x => x.RoleName == roleName);
         }
 
@@ -583,7 +583,7 @@ namespace Identity.Dapper.Postgres.Stores
         public Task<IList<ApplicationUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return _usersTable.GetUsersInRoleAsync(roleName);
+            return _usersRepo.GetUsersInRoleAsync(roleName);
         }
         #endregion IUserRoleStore<ApplicationUser> Implementation
 
@@ -595,7 +595,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             loginProvider.ThrowIfNull(nameof(loginProvider));
-            user.Tokens = user.Tokens ?? (await _userTokensTable.GetTokensAsync(user.Id)).ToList();
+            user.Tokens = user.Tokens ?? (await _userTokensRepo.GetTokensAsync(user.Id)).ToList();
 
             user.Tokens.Add(new UserToken
             {
@@ -613,7 +613,7 @@ namespace Identity.Dapper.Postgres.Stores
             cancellationToken.ThrowIfCancellationRequested();
             user.ThrowIfNull(nameof(user));
             loginProvider.ThrowIfNull(nameof(loginProvider));
-            user.Tokens = user.Tokens ?? (await _userTokensTable.GetTokensAsync(user.Id)).ToList();
+            user.Tokens = user.Tokens ?? (await _userTokensRepo.GetTokensAsync(user.Id)).ToList();
             var token = user.Tokens.SingleOrDefault(x => x.LoginProvider == loginProvider && x.Name == name);
             user.Tokens.Remove(token);
         }
@@ -626,7 +626,7 @@ namespace Identity.Dapper.Postgres.Stores
             user.ThrowIfNull(nameof(user));
             loginProvider.ThrowIfNull(nameof(loginProvider));
             name.ThrowIfNull(nameof(name));
-            user.Tokens = user.Tokens ?? (await _userTokensTable.GetTokensAsync(user.Id)).ToList();
+            user.Tokens = user.Tokens ?? (await _userTokensRepo.GetTokensAsync(user.Id)).ToList();
             return user.Tokens.SingleOrDefault(x => x.LoginProvider == loginProvider && x.Name == name)?.Value;
         }
         #endregion

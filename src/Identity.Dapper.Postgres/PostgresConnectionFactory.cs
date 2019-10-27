@@ -11,13 +11,13 @@ namespace Identity.Dapper.Postgres
     /// </summary>
     public class PostgresConnectionFactory : IDatabaseConnectionFactory
     {
-        private readonly string _connectionString;
+        internal readonly string _connectionString;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="connectionString">Database connection string</param>
-        public PostgresConnectionFactory(string connectionString) => _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+        public PostgresConnectionFactory(string connectionString) => _connectionString = connectionString.ThrowIfNull(nameof(connectionString));
 
         /// <inheritdoc/>
         public async Task<IDbConnection> CreateConnectionAsync() 

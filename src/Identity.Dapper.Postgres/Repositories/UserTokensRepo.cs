@@ -6,11 +6,11 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    public class UserTokensTable
+    public class UserTokensRepo
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
-        public UserTokensTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
+        public UserTokensRepo(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
         public async Task<IEnumerable<UserToken>> GetTokensAsync(Guid userId)
         {

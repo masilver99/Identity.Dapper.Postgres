@@ -8,11 +8,11 @@ using Identity.Dapper.Postgres.Models;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    internal class RoleClaimsTable
+    internal class RoleClaimsRepo
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
-        public RoleClaimsTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
+        public RoleClaimsRepo(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
         public async Task<IList<Claim>> GetClaimsAsync(Guid roleId)
         {

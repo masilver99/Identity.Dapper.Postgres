@@ -31,13 +31,13 @@ namespace Identity.Dapper.Postgres
 
         private static void AddStores(IServiceCollection services,  string connectionString) 
         {
-            services.AddTransient(typeof(UsersTable));
-            services.AddTransient(typeof(RoleClaimsTable));
-            services.AddTransient(typeof(RolesTable));
-            services.AddTransient(typeof(UserClaimsTable));
-            services.AddTransient(typeof(UserLoginsTable));
-            services.AddTransient(typeof(UserRolesTable));
-            services.AddTransient(typeof(UserTokensTable));
+            services.AddTransient(typeof(UsersRepo));
+            services.AddTransient(typeof(RoleClaimsRepo));
+            services.AddTransient(typeof(RolesRepo));
+            services.AddTransient(typeof(UserClaimsRepo));
+            services.AddTransient(typeof(UserLoginsRepo));
+            services.AddTransient(typeof(UserRolesRepo));
+            services.AddTransient(typeof(UserTokensRepo));
             services.AddScoped<IDatabaseConnectionFactory>(provider => new PostgresConnectionFactory(connectionString));
             services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();

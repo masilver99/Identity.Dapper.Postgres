@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Dapper.Postgres.Tables
 {
-    public class UsersTable
+    public class UsersRepo
     {
         private readonly IDatabaseConnectionFactory _databaseConnectionFactory;
 
-        public UsersTable(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
+        public UsersRepo(IDatabaseConnectionFactory databaseConnectionFactory) => _databaseConnectionFactory = databaseConnectionFactory;
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user)
         {

@@ -15,8 +15,8 @@ namespace Identity.Dapper.Postgres.Stores
     /// </summary>
     public class RoleStore : IQueryableRoleStore<ApplicationRole>, IRoleClaimStore<ApplicationRole>, IRoleStore<ApplicationRole>
     {
-        private readonly RolesTable _rolesTable;
-        private readonly RoleClaimsTable _roleClaimsTable;
+        private readonly RolesRepo _rolesTable;
+        private readonly RoleClaimsRepo _roleClaimsTable;
 
         /// <summary>
         /// Constructor
@@ -24,8 +24,8 @@ namespace Identity.Dapper.Postgres.Stores
         /// <param name="databaseConnectionFactory"></param>
         public RoleStore(IDatabaseConnectionFactory databaseConnectionFactory)
         {
-            _rolesTable = new RolesTable(databaseConnectionFactory);
-            _roleClaimsTable = new RoleClaimsTable(databaseConnectionFactory);
+            _rolesTable = new RolesRepo(databaseConnectionFactory);
+            _roleClaimsTable = new RoleClaimsRepo(databaseConnectionFactory);
         }
 
         #region IQueryableRoleStore Implementation
